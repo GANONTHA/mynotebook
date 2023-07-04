@@ -29,53 +29,69 @@ late final TextEditingController _password;
   }
   @override
   Widget build(BuildContext context) {
-     return Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                hintText: 'Enter your email',
-                labelText: 'Email',
+     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Register'),
+        centerTitle: true,
+      ),
+       body: Column(
+            children: [
+              TextField(
+                controller: _email,
+                enableSuggestions: false,
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your email',
+                  labelText: 'Email',
+                ),
               ),
-            ),
-            TextField(
-              controller: _password,
-              decoration: const InputDecoration(
-                hintText: 'Enter your passowrd', 
-                 labelText: "Password"), 
-                 obscureText: true,
-                 enableSuggestions: false,
-                 autocorrect: false,
-            ),
-            TextButton(
-              onPressed: () async { 
-                final email = _email.text;
-                final password = _password.text;
-//Handle Exception on API call for Firebase Exception
-                try {
-              final usercredential = 
-               await  FirebaseAuth.instance.createUserWithEmailAndPassword(
-                  email: email,
-                  password: password
-                  );
-                print(usercredential);
-             
-              } on FirebaseAuthException catch(e){
-                if(e.code == 'weak-password') {
-                  print('THE PASSWORD MUST HAVE AT LEAST 6 CHARACTERS');
-                } else if(e.code == 'invalid-email') {
-                  print("THE FORMAT OF YOUR EMAIL IS INCORRECT");
-                } else if(e.code == 'email-already-in-use') {
-                  print("THE EMAIL IS ALREADY USED BY ANOTHER USER");
+              TextField(
+                controller: _password,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your passowrd', 
+                   labelText: "Password"), 
+                   obscureText: true,
+                   enableSuggestions: false,
+                   autocorrect: false,
+              ),
+              TextButton(
+                onPressed: () async { 
+                  final email = _email.text;
+                  final password = _password.text;
+     //Handle Exception on API call for Firebase Exception
+                  try {
+                final usercredential = 
+                 await  FirebaseAuth.instance.createUserWithEmailAndPassword(
+                    email: email,
+                    password: password
+                    );
+                  print(usercredential);
+               
+                } on FirebaseAuthException catch(e){
+                  if(e.code == 'weak-password') {
+                    print('THE PASSWORD MUST HAVE AT LEAST 6 CHARACTERS');
+                  } else if(e.code == 'invalid-email') {
+                    print("THE FORMAT OF YOUR EMAIL IS INCORRECT");
+                  } else if(e.code == 'email-already-in-use') {
+                    print("THE EMAIL IS ALREADY USED BY ANOTHER USER");
+                  }
                 }
-              }
-              },
-              child: const Text('Register'),
-            ),
-          ],
-        );
+                },
+                child: const Text('Register'),
+              ),
+                //Button to go to register
+            TextButton(
+              onPressed: (){
+                Navigator.of(context).pushNamedAndRemoveUntil('/login/',
+                 (route) => false
+                 );
+              }, 
+              child: const Text('Already registered? SignIn here'), //The user will go to Register screen instead if it's her first time
+              ),
+            ],
+          ),
+     );
   }
 }
+
