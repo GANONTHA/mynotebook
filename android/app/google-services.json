@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "773312093068",
+    "project_id": "mynotebook-fbd3d",
+    "storage_bucket": "mynotebook-fbd3d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:773312093068:android:b333de3d0ca9f6333894a9",
+        "android_client_info": {
+          "package_name": "com.example.mynotebook"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "773312093068-prjirb637il7bq8mqc1k3qs47b1ks9eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBgzm7npRFbXfQyW7zY2oSACFviLbe8Mls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "773312093068-prjirb637il7bq8mqc1k3qs47b1ks9eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
