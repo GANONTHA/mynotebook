@@ -33,24 +33,46 @@ class HomePage extends StatelessWidget {
         builder: (context, snapshot) {
           switch (snapshot.connectionState) {
             case ConnectionState.done:
-            final user = FirebaseAuth.instance.currentUser;
-         
-            if (user?.emailVerified ?? false) {
-              print('THIS EMAIL IS GOOD TO GO');
-            } else {
-              print('Make sure you verify the user');
-            }
-             return Text('Done');
+            
+            // final user = FirebaseAuth.instance.currentUser;
+  
+            // if (user?.emailVerified ?? false) {
+            //   print('THIS EMAIL IS GOOD TO GO');
+            //   return const Text('Done');
+            // } else {
+            //   return  const VerifyEmailview();
+            // }
         default:
-        return const Text('Loading');
+        return const LoginView();
           }
-
-        
         },
-        
       ),
     );
   }
 
 
+}
+
+class VerifyEmailview extends StatefulWidget {
+  const VerifyEmailview({super.key});
+
+  @override
+  State<VerifyEmailview> createState() => _VerifyEmailviewState();
+}
+
+class _VerifyEmailviewState extends State<VerifyEmailview> {
+  @override
+  Widget build(BuildContext context) {
+    return Column(children: [
+       const  Text('Please verify your email'),
+        TextButton( 
+          onPressed: () async {
+              final user = FirebaseAuth.instance.currentUser;
+              await user?.sendEmailVerification();
+          },
+          child: const Text('Send email Verification'),
+        )
+      ]
+      );
+  }
 }
