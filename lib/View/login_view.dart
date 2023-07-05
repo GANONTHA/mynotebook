@@ -1,7 +1,7 @@
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:developer' as devtools show log;
 
 class LoginView extends StatefulWidget { //login class. This class is used to login into the app
   const LoginView({super.key});
@@ -61,21 +61,22 @@ late final TextEditingController _password;
                   final email = _email.text;
                   final password = _password.text;
     
-    //Handling Exception on API call for Firebase Exception
+    //Handling Exception on API's call for Firebase Exception
                   try{
-                           final usercredential = 
                  await  FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: email,
                     password: password
                     );
-                  print(usercredential);
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      "/notes/", 
+                      (route) => false,
+                      );
                   } on FirebaseAuthException   catch(e){
                     if(e.code == 'user-not-found') {
-                      print('USER NOTFPUND');
+                      devtools.log("User not found");
                     } else if(e.code == 'wrong-password'){
-                      print('THE PASSWORD IS NOT CORRECT');
-                    } else {
-                      print(e.code);
+                      devtools.log("Wrong passsword");
                     }
                   }
                 },

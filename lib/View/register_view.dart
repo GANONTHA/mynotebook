@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
+import 'dart:developer' as devtools show log;
 
 
 class RegisterView extends StatefulWidget { //class to register new user
@@ -66,15 +66,15 @@ late final TextEditingController _password;
                     email: email,
                     password: password
                     );
-                  print(usercredential);
+                  devtools.log(usercredential.toString());
                
                 } on FirebaseAuthException catch(e){
                   if(e.code == 'weak-password') {
-                    print('THE PASSWORD MUST HAVE AT LEAST 6 CHARACTERS');
+                    devtools.log("THE PASSWORD MUST HAVE AT LEAST 6 CHARACTERS");
                   } else if(e.code == 'invalid-email') {
-                    print("THE FORMAT OF YOUR EMAIL IS INCORRECT");
+                    devtools.log("THE FORMAT OF YOUR EMAIL IS INCORRECT");
                   } else if(e.code == 'email-already-in-use') {
-                    print("THE EMAIL IS ALREADY USED BY ANOTHER USER");
+                    devtools.log("THE EMAIL IS ALREADY USED BY ANOTHER USER");
                   }
                 }
                 },
