@@ -3,6 +3,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:mynotebook/constants/routes.dart';
+
 class LoginView extends StatefulWidget { //login class. This class is used to login into the app
   const LoginView({super.key});
 
@@ -69,7 +71,7 @@ late final TextEditingController _password;
                     );
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      "/notes/", 
+                      notesRoute, 
                       (route) => false,
                       );
                   } on FirebaseAuthException   catch(e){
@@ -86,7 +88,7 @@ late final TextEditingController _password;
       //Button to go to register
               TextButton(
                 onPressed: (){
-                  Navigator.of(context).pushNamedAndRemoveUntil('/register/',
+                  Navigator.of(context).pushNamedAndRemoveUntil(registerRoute,
                    (route) => false
                    );
                 }, 

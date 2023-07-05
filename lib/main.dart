@@ -1,9 +1,9 @@
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:mynotebook/View/login_view.dart';
 import 'package:mynotebook/View/register_view.dart';
 import 'package:mynotebook/View/verify_email_view.dart';
+import 'package:mynotebook/constants/routes.dart';
 import 'firebase_options.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -16,9 +16,9 @@ void main() {
       title: 'My notebook',
       home: const HomePage(),
       routes: {
-        '/login/':(context) => const LoginView(),
-        '/register/':(context) => const RegisterView(),
-        '/notes/': (context) => const NotesView(),
+        loginRoute:(context) => const LoginView(),
+        registerRoute:(context) => const RegisterView(),
+        notesRoute: (context) => const NotesView(),
       },
     ));
 }
@@ -84,7 +84,7 @@ class _NotesViewState extends State<NotesView> {
                    await FirebaseAuth.instance.signOut();
                    // ignore: use_build_context_synchronously
                    Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/login/',
+                    loginRoute,
                     (_) => false,
                    );
                   }

@@ -2,6 +2,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'dart:developer' as devtools show log;
 
+import 'package:mynotebook/constants/routes.dart';
+
 
 class RegisterView extends StatefulWidget { //class to register new user
   const RegisterView({super.key});
@@ -83,7 +85,7 @@ late final TextEditingController _password;
                 //Button to go to register
             TextButton(
               onPressed: (){
-                Navigator.of(context).pushNamedAndRemoveUntil('/login/',
+                Navigator.of(context).pushNamedAndRemoveUntil(loginRoute,
                  (route) => false
                  );
               }, 
