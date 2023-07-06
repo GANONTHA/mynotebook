@@ -1,6 +1,7 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:mynotebook/constants/routes.dart';
+import 'package:mynotebook/services/auth/auth_exception.dart';
+import 'package:mynotebook/services/auth/auth_service.dart';
 import '../utilities/show_error_dialog.dart';
 
 
@@ -62,26 +63,22 @@ late final TextEditingController _password;
                   final password = _password.text;
      //Handle Exception on API call for Firebase Exception
                   try {
-                 await  FirebaseAuth.instance.createUserWithEmailAndPassword(
+                 await  AuthService.firebase().createUser(
                     email: email,
                     password: password
                     );
-                    final user = FirebaseAuth.instance.currentUser;  //Get the current user
-                    await user?.sendEmailVerification();             // sent an email verification
+          
+                await AuthService.firebase().sendEmailVerification();          // sent an email verification
                     // ignore: use_build_context_synchronously
                     Navigator.of(context).pushNamed(verifyEmailRoute);
-                } on FirebaseAuthException catch(e){
-                  if(e.code == 'weak-password') {
-                    await showErrorDialog(context, "The password must have at least 6 characters");
-                  } else if(e.code == 'invalid-email') {
-                    await showErrorDialog(context, "The email does not Exist");
-                  } else if(e.code == 'email-already-in-use') {
-                    await showErrorDialog(context, "The email already Registered");
-                  } else {
-                    await showErrorDialog(context, "Error: ${e.code}",);
-                  }
-                } catch (e) {
-                  await showErrorDialog(context, "Error: ${e.toString()}",);
+                } on WeakPasswordAuthException {
+                  await showErrorDialog(context, "The password must have at least 6 characters");
+                } on InvalidEmailAuthException {
+                   await showErrorDialog(context, "The email does not Exist");
+                } on EmailAlreadyInUseAuthException {
+                  await showErrorDialog(context, "The email already Registered");
+                } on GenericAuthException {
+                  await showErrorDialog(context, "AUTHENTIFICATION ERROR",);
                 }
                 },
                 child: const Text('Register'),
