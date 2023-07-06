@@ -60,18 +60,32 @@ late final TextEditingController _password;
                 onPressed: () async { 
                   final email = _email.text;
                   final password = _password.text;
-    
+                  
+                  
     //Handling Exception on API's call for Firebase Exception
                   try{
                  await  FirebaseAuth.instance.signInWithEmailAndPassword(
                     email: email,
                     password: password
                     );
-                    // ignore: use_build_context_synchronously
-                    Navigator.of(context).pushNamedAndRemoveUntil(
+                    final user = FirebaseAuth.instance.currentUser;
+                      if (user?.emailVerified??false) {
+                      //user's email is verified
+                      // ignore: use_build_context_synchronously
+                       Navigator.of(context).pushNamedAndRemoveUntil(
                       notesRoute, 
                       (route) => false,
                       );
+                    }else {
+                      //user's email isn't verified
+                       // ignore: use_build_context_synchronously
+                       Navigator.of(context).pushNamedAndRemoveUntil(
+                      verifyEmailRoute, 
+                      (route) => false,
+                      );
+                    }
+                    
+                   
                   } on FirebaseAuthException   catch(e){
                     if(e.code == 'user-not-found') {
                       await showErrorDialog(context, "USER NOT FOUND",);
