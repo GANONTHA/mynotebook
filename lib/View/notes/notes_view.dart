@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mynotebook/services/auth/auth_service.dart';
 import 'package:mynotebook/services/crud/notes_service.dart';
-import '../constants/routes.dart';
-import '../enums/menu_action.dart';
-import '../main.dart';
+import '../../constants/routes.dart';
+import '../../enums/menu_action.dart';
+import '../../main.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -32,8 +32,14 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
   Widget build(BuildContext context) {
     return Scaffold( 
       appBar: AppBar( 
-        title: const Text('My notes'),
+        title: const Text('My Notes'),
         actions: [ 
+          IconButton(
+            onPressed: () { 
+              Navigator.of(context).pushNamed(newNoteRoute);
+            }, 
+            icon: const Icon(Icons.add)
+            ),
           PopupMenuButton<MenuAction>(
             onSelected: (value) async {
                 switch (value) {

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mynotebook/View/login_view.dart';
+import 'package:mynotebook/View/notes/new_note_view.dart';
 import 'package:mynotebook/View/register_view.dart';
 import 'package:mynotebook/View/verify_email_view.dart';
 import 'package:mynotebook/constants/routes.dart';
 import 'package:mynotebook/services/auth/auth_service.dart';
-import 'View/notes_view.dart';
+import 'View/notes/notes_view.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized(); //initializing our db (Firebase)
@@ -17,6 +18,7 @@ void main() {
         registerRoute:(context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const VerifyEmailview(),
+        newNoteRoute: (context) => const NewNoteView(),
       },
     ));
 }
