@@ -13,9 +13,16 @@ class NoteService {
 List<DatabaseNote> _notes = [];
 
 static final NoteService _shared = NoteService._shardInstance();
-NoteService._shardInstance();
+NoteService._shardInstance() {
+  _notesStreamController = StreamController<List<DatabaseNote>>.broadcast(
+    onListen: () {
+      _notesStreamController.sink.add(_notes);
+    },
+  );
+}
 factory NoteService() => _shared;
-final _notesStreamController = StreamController<List<DatabaseNote>>.broadcast();
+late final StreamController<List<DatabaseNote>> _notesStreamController;
+
 Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 Future<DatabaseUser> getOrCreateUser({required String email}) async{
   try {
@@ -288,7 +295,7 @@ const idColumn = 'id';
 const emailColumn = 'email';
 const userIdColumn = 'user_id';
 const textColumn = 'text';
-const isSyncedWithCloudColumn = 'is_synced_with-coud';
+const isSyncedWithCloudColumn = 'is_synced_with_cloud';
 const dbName = 'notes.db';
 const noteTable = 'note';
 const userTable = 'user';
