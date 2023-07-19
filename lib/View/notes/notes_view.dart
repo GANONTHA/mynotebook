@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:mynotebook/View/notes/notes_list_view.dart';
 import 'package:mynotebook/services/auth/auth_service.dart';
 import 'package:mynotebook/services/crud/notes_service.dart';
 import '../../constants/routes.dart';
 import '../../enums/menu_action.dart';
 import '../../main.dart';
+import '../../utilities/dialogs/logout_dialog.dart';
 
 class NotesView extends StatefulWidget {
   const NotesView({super.key});
@@ -40,7 +42,7 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
                 switch (value) {
                   case MenuAction.logout:
                   final shouldLogOut = await showLogOutDialog(context);
-                  //devtools.log(shouldLogOut.toString());
+                  
                   if (shouldLogOut) {
                    await AuthService.firebase().logOut();
                    // ignore: use_build_context_synchronously
@@ -76,19 +78,11 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
                     case ConnectionState.active:
                       if (snapshot.hasData) {
                         final allNotes = snapshot.data as List<DatabaseNote>;
-                        return ListView.builder( 
-                          itemCount: allNotes.length,
-                          itemBuilder: (context, index) {
-                            final note = allNotes[index];
-                            return ListTile(
-                              title: Text( 
-                                note.text,
-                                maxLines: 1,
-                                softWrap: true,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            );
-                          },
+                      return NotesListView(
+                        notes: allNotes, 
+                        onDeleteNote: (note) async{ 
+                          await _notesService.deleteNote(id: note.id);
+                        }
                         );
                       }else {
                         return const CircularProgressIndicator();

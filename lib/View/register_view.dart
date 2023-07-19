@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mynotebook/constants/routes.dart';
 import 'package:mynotebook/services/auth/auth_exception.dart';
 import 'package:mynotebook/services/auth/auth_service.dart';
-import '../utilities/show_error_dialog.dart';
+import '../utilities/dialogs/error_dialog.dart';
+
 
 
 class RegisterView extends StatefulWidget { //class to register new user
