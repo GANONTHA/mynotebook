@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mynotebook/View/login_view.dart';
-import 'package:mynotebook/View/notes/new_note_view.dart';
+import 'package:mynotebook/View/notes/create_update_note_view.dart';
 import 'package:mynotebook/View/register_view.dart';
 import 'package:mynotebook/View/verify_email_view.dart';
 import 'package:mynotebook/constants/routes.dart';
@@ -18,7 +18,7 @@ void main() {
         registerRoute:(context) => const RegisterView(),
         notesRoute: (context) => const NotesView(),
         verifyEmailRoute: (context) => const VerifyEmailview(),
-        newNoteRoute: (context) => const NewNoteView(),
+        createOrUpdateNoteRoute: (context) => const CreateUpdateNoteView(),
       },
     ));
 }
@@ -53,30 +53,3 @@ class HomePage extends StatelessWidget {
       );
   }
 }
-
-
-// Future<bool> showLogOutDialog (BuildContext context) {
-//  return showDialog<bool>(
-//     context: context, 
-//     builder:(context) {
-//       return AlertDialog( 
-//         title: const Text('Sign Out here'),
-//         content: const Text('Are sure you want to sign out ?'),
-//         actions: [ 
-//           TextButton(
-//             onPressed: () {
-//               Navigator.of(context).pop(false);
-//             }, 
-//             child: const Text('Cancel'),
-//             ),
-//               TextButton(
-//             onPressed: () {
-//             Navigator.of(context).pop(true);
-//             }, 
-//             child: const Text('Log Out'),
-//             ),
-//         ],
-//       );
-//     },
-//     ).then((value) => value ?? false);
-// }

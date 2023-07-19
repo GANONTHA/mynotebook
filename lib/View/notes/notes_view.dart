@@ -4,7 +4,6 @@ import 'package:mynotebook/services/auth/auth_service.dart';
 import 'package:mynotebook/services/crud/notes_service.dart';
 import '../../constants/routes.dart';
 import '../../enums/menu_action.dart';
-import '../../main.dart';
 import '../../utilities/dialogs/logout_dialog.dart';
 
 class NotesView extends StatefulWidget {
@@ -33,7 +32,7 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
         actions: [ 
           IconButton(
             onPressed: () { 
-              Navigator.of(context).pushNamed(newNoteRoute);
+              Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
             }, 
             icon: const Icon(Icons.add)
             ),
@@ -80,9 +79,15 @@ String get userEmail => AuthService.firebase().currentUser!.email!;
                         final allNotes = snapshot.data as List<DatabaseNote>;
                       return NotesListView(
                         notes: allNotes, 
-                        onDeleteNote: (note) async{ 
+                        onDeleteNote: (note) async{   //function to delete the item when user click on the icon
                           await _notesService.deleteNote(id: note.id);
-                        }
+                        },
+                        onTap: (note) {   //To update the item when user click on an existing note
+                          Navigator.of(context).pushNamed(
+                            createOrUpdateNoteRoute,
+                            arguments: note,
+                            );
+                        },
                         );
                       }else {
                         return const CircularProgressIndicator();
