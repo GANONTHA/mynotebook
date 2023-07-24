@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mynotebook/constants/routes.dart';
-import 'package:mynotebook/services/auth/auth_service.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../services/auth/bloc/auth_bloc.dart';
+import '../services/auth/bloc/auth_event.dart';
 
 class VerifyEmailview extends StatefulWidget {
   const VerifyEmailview({super.key});
@@ -18,27 +19,25 @@ class _VerifyEmailviewState extends State<VerifyEmailview> {
         centerTitle: true,
       ),
       body: Column(children: [
-        const Text("We've sent you an email verification please verify your account"),
-         const  Text("If you haven't received email verification yet, press the button below"),
-          TextButton( 
-            onPressed: () async {
-             AuthService.firebase().sendEmailVerification();   //send an Email verification
-            },
-            child: const Text('Send email Verification'),
-          ),
-          TextButton(
-            onPressed: () async{
-             await  AuthService.firebase().logOut();
-             // ignore: use_build_context_synchronously
-             Navigator.of(context).pushNamedAndRemoveUntil(
-              registerRoute,
-              (route) => false,
-             );
-            }, 
-            child: const Text('Restart'),
-            )
-        ]
+        const Text(
+            "We've sent you an email verification please verify your account"),
+        const Text(
+            "If you haven't received email verification yet, press the button below"),
+        TextButton(
+          onPressed: () {
+            context
+                .read<AuthBloc>()
+                .add(const AuthEventSendEmailVerification());
+          },
+          child: const Text('Send email Verification'),
         ),
+        TextButton(
+          onPressed: () {
+            context.read<AuthBloc>().add(const AuthEventLogOut());
+          },
+          child: const Text('Restart'),
+        )
+      ]),
     );
   }
 }
