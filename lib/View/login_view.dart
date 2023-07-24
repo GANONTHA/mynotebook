@@ -4,6 +4,7 @@ import 'package:mynotebook/constants/routes.dart';
 import 'package:mynotebook/services/auth/auth_exception.dart';
 import 'package:mynotebook/services/auth/bloc/auth_bloc.dart';
 import 'package:mynotebook/services/auth/bloc/auth_event.dart';
+import 'package:mynotebook/services/auth/bloc/auth_state.dart';
 import '../utilities/dialogs/error_dialog.dart';
 
 class LoginView extends StatefulWidget {
@@ -54,44 +55,40 @@ class _LoginViewState extends State<LoginView> {
           TextField(
             controller: _password,
             decoration: const InputDecoration(
-              hintText: 'Enter your passowrd',
+              hintText: 'Enter your password',
               // labelText: "Password",
             ),
             obscureText: true,
             enableSuggestions: false,
             autocorrect: false,
           ),
-          TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
+          BlocListener<AuthBloc, AuthState>(
+            listener: (context, state) async {
+              if (state is AuthStateLoggedOut) {
+                if (state.exception is UserNotFoundAuthException) {
+                  await showErrorDialog(context, 'User-Not-Found');
+                } else if (state.exception is WrongPasswordAuthException) {
+                  await showErrorDialog(context, 'Wrong-Credentials');
+                } else if (state.exception is GenericAuthException) {
+                  await showErrorDialog(context, 'Authentification-Error');
+                }
+              }
+            },
+            child: TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
 
-              //Handling Exception on API's call for Firebase Exception
-              try {
+                //Handling Exception on API's call for Firebase Exception
                 context.read<AuthBloc>().add(
                       AuthEventLogIn(
                         email,
                         password,
                       ),
                     );
-              } on UserNotFoundAuthException {
-                await showErrorDialog(
-                  context,
-                  "USER NOT FOUND",
-                );
-              } on WrongPasswordAuthException {
-                await showErrorDialog(
-                  context,
-                  "WRONG PASSWORD",
-                );
-              } on GenericAuthException {
-                await showErrorDialog(
-                  context,
-                  "AUTHENTIFICATION ERROR",
-                );
-              }
-            },
-            child: const Text('Login'),
+              },
+              child: const Text('Login'),
+            ),
           ),
 
           //Button to go to register
