@@ -38,7 +38,8 @@ class _LoginViewState extends State<LoginView> {
       listener: (context, state) async {
         if (state is AuthStateLoggedOut) {
           if (state.exception is UserNotFoundAuthException) {
-            await showErrorDialog(context, 'User-Not-Found');
+            await showErrorDialog(
+                context, 'Cannot find a user with the enterred credentials');
           } else if (state.exception is WrongPasswordAuthException) {
             await showErrorDialog(context, 'Wrong-Credentials');
           } else if (state.exception is GenericAuthException) {
@@ -51,53 +52,64 @@ class _LoginViewState extends State<LoginView> {
           title: const Text('Login'),
           centerTitle: true,
         ),
-        body: Column(
-          children: [
-            TextField(
-              controller: _email,
-              enableSuggestions: false,
-              autocorrect: false,
-              keyboardType: TextInputType.emailAddress,
-              decoration: const InputDecoration(
-                hintText: 'Enter your email',
-                //labelText: 'Email',
+        body: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              const Text('Please log into your account with your credentials'),
+              TextField(
+                controller: _email,
+                enableSuggestions: false,
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your email',
+                  //labelText: 'Email',
+                ),
               ),
-            ),
-            TextField(
-              controller: _password,
-              decoration: const InputDecoration(
-                hintText: 'Enter your password',
-                // labelText: "Password",
+              TextField(
+                controller: _password,
+                decoration: const InputDecoration(
+                  hintText: 'Enter your password',
+                  // labelText: "Password",
+                ),
+                obscureText: true,
+                enableSuggestions: false,
+                autocorrect: false,
               ),
-              obscureText: true,
-              enableSuggestions: false,
-              autocorrect: false,
-            ),
-            TextButton(
-              onPressed: () async {
-                final email = _email.text;
-                final password = _password.text;
 
-                //Handling Exception on API's call for Firebase Exception
-                context.read<AuthBloc>().add(
-                      AuthEventLogIn(
-                        email,
-                        password,
-                      ),
-                    );
-              },
-              child: const Text('Login'),
-            ),
+              TextButton(
+                onPressed: () async {
+                  final email = _email.text;
+                  final password = _password.text;
+                  context.read<AuthBloc>().add(
+                        AuthEventLogIn(
+                          email,
+                          password,
+                        ),
+                      );
+                },
+                child: const Text('Login'),
+              ),
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(
+                        const AuthEventForgotPassword(email: ''),
+                      );
+                },
+                child: const Text('I forgot my passoword'),
+              ),
 
-            //Button to go to register
-            TextButton(
-              onPressed: () {
-                context.read<AuthBloc>().add(const AuthEventShouldRegister());
-              },
-              child: const Text(
-                  'Not registered yet? Register here'), //The user will go to Register screen instead if it's her first time
-            ),
-          ],
+              //Button to go to register
+              TextButton(
+                onPressed: () {
+                  context.read<AuthBloc>().add(const AuthEventShouldRegister());
+                },
+                child: const Text(
+                    'Not registered yet? Register here'), //The user will go to Register screen instead if it's her first time
+              ),
+            ],
+          ),
         ),
       ),
     );

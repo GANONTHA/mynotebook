@@ -1,6 +1,6 @@
 import 'package:mynotebook/services/auth/auth_exception.dart';
 import 'package:mynotebook/services/auth/auth_user.dart';
-import 'package:mynotebook/services/auth_provider.dart';
+import 'package:mynotebook/services/auth/auth_provider.dart';
 import 'package:test/test.dart';
 
 void main() {
@@ -73,7 +73,7 @@ void main() {
 
     test('Should be able to log out and log in again', () async {
       await provider.logOut();
-      await provider.login(email: "email", password: 'password');
+      await provider.logIn(email: "email", password: 'password');
       final user = provider.currentUser;
       expect(user, isNotNull);
     });
@@ -89,11 +89,18 @@ class MockAuthProvider implements AuthProvider {
   bool get isInitialized => _isInitialized;
 
   @override
-  Future<AuthUser> createUser(
-      {required String email, required String password}) async {
-    if (!_isInitialized) throw NotInitializedException();
+  Future<AuthUser> createUser({
+    required String email,
+    required String password,
+  }) async {
+    if (!_isInitialized) {
+      throw NotInitializedException();
+    }
     await Future.delayed(const Duration(seconds: 1));
-    return login(email: email, password: password);
+    return logIn(
+      email: email,
+      password: password,
+    );
   }
 
   @override
@@ -114,7 +121,7 @@ class MockAuthProvider implements AuthProvider {
   }
 
   @override
-  Future<AuthUser> login({required String email, required String password}) {
+  Future<AuthUser> logIn({required String email, required String password}) {
     if (!isInitialized) throw NotInitializedException();
     if (email == 'fooo@bar.com') throw UserNotFoundAuthException();
     if (password == 'foobaz') throw WrongPasswordAuthException();
@@ -139,5 +146,10 @@ class MockAuthProvider implements AuthProvider {
       email: 'example@gmail.com',
     );
     _user = newUser;
+  }
+
+  @override
+  Future<void> sendPasswordReset({required String toEmail}) {
+    throw UnimplementedError();
   }
 }
