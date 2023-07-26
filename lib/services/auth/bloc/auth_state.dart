@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show immutable;
 import 'package:mynotebook/services/auth/auth_user.dart';
-import 'package:equatable/equatable.dart';
+//import 'package:equatable/equatable.dart';
 
 @immutable
 abstract class AuthState {
@@ -42,7 +42,7 @@ class AuthStateNeedsVerification extends AuthState {
   const AuthStateNeedsVerification({required super.isLoading});
 }
 
-class AuthStateLoggedOut extends AuthState with EquatableMixin {
+class AuthStateLoggedOut extends AuthState {
   final Exception? exception;
 
   const AuthStateLoggedOut({
@@ -54,6 +54,6 @@ class AuthStateLoggedOut extends AuthState with EquatableMixin {
           loadingText: loadingText,
         );
 
-  @override
-  List<Object?> get props => throw [exception, isLoading];
+  // @override
+  // List<Object?> get props => throw [exception, isLoading];
 }

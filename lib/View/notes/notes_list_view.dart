@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:mynotebook/services/cloud/cloud_note.dart';
 import '../../utilities/dialogs/delete_dialog.dart';
 
-typedef NoteCallback = void Function(CloudNote note);
+typedef NoteCallback = void Function(CloudNote? note);
 
 class NotesListView extends StatelessWidget {
-  final Iterable<CloudNote> notes;
+  final Iterable<CloudNote?> notes;
   final NoteCallback onDeleteNote;
   final NoteCallback onTap;
   const NotesListView(
@@ -26,7 +26,7 @@ class NotesListView extends StatelessWidget {
             onTap(note);
           },
           title: Text(
-            note.text,
+            note!.text,
             maxLines: 1,
             softWrap: true,
             overflow: TextOverflow.ellipsis,

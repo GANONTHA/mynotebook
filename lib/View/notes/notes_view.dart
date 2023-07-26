@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:mynotebook/View/notes/notes_list_view.dart';
@@ -50,7 +52,6 @@ class _NotesViewState extends State<NotesView> {
                         const AuthEventLogOut(),
                       );
                 }
-                break;
             }
           }, itemBuilder: (context) {
             return const [
@@ -75,7 +76,8 @@ class _NotesViewState extends State<NotesView> {
                     onDeleteNote: (note) async {
                       //function to delete the item when user click on the icon
                       await _notesService.deleteNote(
-                          documentId: note.documentId);
+                        documentId: note!.documentId,
+                      );
                     },
                     onTap: (note) {
                       //To update the item when user click on an existing note
